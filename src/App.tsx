@@ -1,3 +1,4 @@
+import React from "react";
 import "./App.css";
 import {
   useGetAllProductsQuery,
@@ -7,7 +8,7 @@ import { useState } from "react";
 
 function App() {
   // const { data, isLoading, error, isError } = useGetAllProductsQuery();
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState<string>("");
 
   const {
     data: singleProduct,
@@ -17,7 +18,12 @@ function App() {
   } = useGetSingleProductQuery(input);
 
   if (isLoading) return <h1>Loading...</h1>;
-  if (isError) return <p>{error}</p>;
+  if (isError) {
+    // check the type of error before rendering it
+    const errorMessage =
+      error instanceof Error ? error.message : "An error occurred";
+    return <p>{errorMessage}</p>;
+  }
 
   return (
     <div className="App">
